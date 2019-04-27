@@ -32,9 +32,9 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        Cash = 0;
-        RefreshNetWorth();
+        Cash = 0;        
         investments = UIManager.Instance.investments;
+        RefreshNetWorth();
     }
 
     public void OnJobGained(ClickableJob job)

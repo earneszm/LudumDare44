@@ -6,50 +6,56 @@ using TMPro;
 public class ClickableJob : MonoBehaviour
 {
     [SerializeField]
-    private int health;
+    private TextMeshProUGUI nameText;
     [SerializeField]
-    private int value;
+    private TextMeshProUGUI healthText;
+    [SerializeField]
+    private TextMeshProUGUI valueText;
 
-    [SerializeField]
-    private TextMeshProUGUI text;
+    private int currentHealth;
+
+    
     private Collider2D clickable;
 
-    public int Value { get { return value; } }
+    private JobType jobType;
+    private JobSpawnController jobController;
+
+    public int Value { get { return jobType.Value; } }
 
     private void Awake()
     {
         clickable = GetComponent<Collider2D>();
     }
 
-    private void Start()
-    {
-        UpdateText();
-    }
-
     public void Clicked()
     {
-        health--;
+        currentHealth--;
 
-        if (health <= 0)
+        if (currentHealth <= 0)
             PickUp();
         else
-            UpdateText();
+            UpdateHealthText();
     }
 
-    public void SetupJob(int health, int value)
+    public void SetupJob(JobSpawnController jobController, JobType jobType)
     {
-        this.health = health;
-        this.value = value;
+        this.jobController = jobController;
+        this.jobType = jobType;
+        this.currentHealth = jobType.Health;
+
+        nameText.text = jobType.name;
+        UpdateHealthText();
     }
 
-    private void UpdateText()
+    private void UpdateHealthText()
     {
-        text.text = health.ToString();
+        healthText.text = currentHealth.ToString();
     }
 
     private void PickUp()
     {
         GameManager.Instance.OnJobGained(this);
+        jobController.ReportJobDestroyed(this);
         Destroy(gameObject);
     }
 }

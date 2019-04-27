@@ -14,3 +14,13 @@ public enum InvestmentType
     [Description("Savings Account")]
     SavingsAccount
 }
+
+public enum StockRiskyness
+{
+    Safe,
+    Normal,
+    Growth,
+    Volatile,
+    Excessive,
+    Crypto
+}

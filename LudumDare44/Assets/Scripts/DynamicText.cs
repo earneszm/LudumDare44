@@ -11,6 +11,11 @@ public class DynamicText : MonoBehaviour
     [SerializeField]
     private string staticText;
 
+    public void SetStaticText(string staticText)
+    {
+        this.staticText = staticText;
+    }
+
     public void UpdateText(string dynamicText)
     {
         tmpText.text = string.Format("{0}{1}", staticText, dynamicText);
@@ -19,5 +24,10 @@ public class DynamicText : MonoBehaviour
     public void UpdateText(int dynamicText)
     {
         UpdateText(dynamicText.ToString());
+    }
+
+    public void UpdateText(float dynamicText)
+    {
+        UpdateText(dynamicText.ToString("N2"));
     }
 }
