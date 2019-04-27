@@ -36,6 +36,12 @@ public class ClickableJob : MonoBehaviour
             UpdateText();
     }
 
+    public void SetupJob(int health, int value)
+    {
+        this.health = health;
+        this.value = value;
+    }
+
     private void UpdateText()
     {
         text.text = health.ToString();

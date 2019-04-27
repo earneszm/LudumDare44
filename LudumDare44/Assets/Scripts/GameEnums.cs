@@ -4,9 +4,13 @@ using UnityEngine;
 
 public enum InvestmentType
 {
+    [Description("Individual Stocks")]
     IndividualStocks,
+    [Description("Index Fund")]
     IndexFund,
     Bonds,
+    [Description("Real Estate")]
     RealEstate,
+    [Description("Savings Account")]
     SavingsAccount
 }
