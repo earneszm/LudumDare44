@@ -17,9 +17,13 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private DynamicText totalYearText;
 
-    [Header("Dialogs")]
+    [Header("Other SystemsPanels")]
     [SerializeField]
     private UIMarketPanel marketItemPanel;
+    [SerializeField]
+    private UIAlertController alertPanel;
+    [SerializeField]
+    private UIWorkerController workerController;
 
     private void Awake()
     {
@@ -76,5 +80,25 @@ public class UIManager : MonoBehaviour
     public void ToggleMarketScreen(Action onCloseCallback = null)
     {
         marketItemPanel.Show();
+    }
+
+    public void CreateAlert(string text, Color color)
+    {
+        alertPanel.SetNewAlert(text, color);
+    }
+
+    public void SetActiveWorkers(int num)
+    {
+        workerController.SetActiveWorkers(num);
+    }
+
+    public bool ConsumeWorker()
+    {
+        return workerController.TryConsumeWorker();
+    }
+
+    public void ReleaseWorker()
+    {
+        workerController.ReleaseWorker();
     }
 }

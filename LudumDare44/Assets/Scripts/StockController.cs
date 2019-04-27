@@ -45,29 +45,32 @@ public class StockController : MonoBehaviour
         }
     }
 
-    public void RefreshStockListUI(bool isRefreshValues = true)
+    public void RefreshStockListUI(bool doSortList = true)
     {
-        if(isRefreshValues)
-        {
-            StockData indexFund = null;
-            foreach (var stock in stockDataList)
-            {
-                if (stock.IsIndexFund)
-                    indexFund = stock;
-                else
-                    stock.DoStockTick();
-            }
-
-            if (indexFund != null)
-            {
-                var count = stockDataList.Where(x => x.IsIndexFund == false).Count();
-                indexFund.SetCurrentValue(stockDataList.Where(x => x.IsIndexFund == false).Sum(x => x.SharePrice) / count);
-            }
-
+        if(doSortList)
             OrderStockList();
-        }
 
         stockListings.ForEach(x => x.RefreshText());
+    }
+
+    public void DoStockTicks()
+    {
+        StockData indexFund = null;
+        foreach (var stock in stockDataList)
+        {
+            if (stock.IsIndexFund)
+                indexFund = stock;
+            else
+                stock.DoStockTick();
+        }
+
+        if (indexFund != null)
+        {
+            var count = stockDataList.Where(x => x.IsIndexFund == false).Count();
+            indexFund.SetCurrentValue(stockDataList.Where(x => x.IsIndexFund == false).Sum(x => x.SharePrice) / count);
+        }
+
+        RefreshStockListUI();
     }
 
     public void BuyStock(StockType stockType, int quantity, bool isRequiresCash = true)

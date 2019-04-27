@@ -75,7 +75,7 @@ public class CompoundController : MonoBehaviour
             GameManager.Instance.ToggleGamePlayActive(false);
             jobSpawner.KillAllActiveJobs();
 
-            UIManager.Instance.ToggleMarketScreen(() => { GameManager.Instance.ToggleGamePlayActive(true); });
+            UIManager.Instance.ToggleMarketScreen(() => { GameManager.Instance.ToggleGamePlayActive(true); jobSpawner.SetNextSpawnAsFirstGroup(); });
         }        
     }
 }

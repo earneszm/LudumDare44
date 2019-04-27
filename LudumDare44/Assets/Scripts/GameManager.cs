@@ -13,6 +13,12 @@ public class GameManager : MonoBehaviour
     private float netWorth;
     public float NetWorth { get { return netWorth; } private set { netWorth = value; UIManager.Instance.UpdateNetWorthText(netWorth); } }
 
+    [SerializeField]
+    private int maxNumWorkers = 2;
+    private int currentAvailableWorkers;
+
+    public int CurrentAvailableWorkers { get { return currentAvailableWorkers; } }
+
     //private List<Investment> investments;
     private bool isGameMainGamePlayActive = true;
     public bool IsGamePlayActive { get { return isGameMainGamePlayActive; } }
@@ -36,6 +42,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        currentAvailableWorkers = maxNumWorkers;
+        UIManager.Instance.SetActiveWorkers(maxNumWorkers);
         Cash = 0;        
       //  investments = UIManager.Instance.investments;
         RefreshNetWorth();
@@ -77,9 +85,9 @@ public class GameManager : MonoBehaviour
         //{
         //    investment.DoCompounding(tc.CompoundsPerYear);
         //}
-
+        sc.DoStockTicks();        
         RefreshNetWorth();
-        sc.RefreshStockListUI();
+        
     }
 
     public void RefreshNetWorth()
@@ -91,6 +99,18 @@ public class GameManager : MonoBehaviour
     public void ToggleGamePlayActive(bool isActive)
     {
         isGameMainGamePlayActive = isActive;
+    }
+
+    public void ReleaseWorker()
+    {
+        currentAvailableWorkers++;
+        UIManager.Instance.ReleaseWorker();
+    }
+
+    public void ConsumeWorker()
+    {
+        if(UIManager.Instance.ConsumeWorker())
+            currentAvailableWorkers--;
     }
     
 }

@@ -2,21 +2,38 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class ClickableJob : MonoBehaviour
 {
     [SerializeField]
     private TextMeshProUGUI nameText;
     [SerializeField]
-    private TextMeshProUGUI valueText;
+    private float maxHealth = 10;
+    [SerializeField]
+    private float healthWorkFactor = 5;
+    [SerializeField]
+    private Image concealmentImage;
+    [SerializeField]
+    private Image healthImage;
 
-    private SpriteRenderer sr;
+    private float currentHealth;
+
+    public bool IsDraggable { get { return currentHealth <= 0; } }
+    private bool isWorkerOnItem = false;
+    public bool IsWorkerOnItem { get { return isWorkerOnItem; } }
+
+    private JobStage stage;
+    private bool hasTransitionedStageVisual = false;
+    
     private Collider2D clickable;
-    private Rigidbody2D rb;
-
-    public StockType stockType;
+    private Rigidbody2D rb;    
     private JobSpawnController jobController;
 
+    [HideInInspector]
+    public SpriteRenderer sr;
+    [HideInInspector]
+    public StockType stockType;
 
     private void Awake()
     {
@@ -25,12 +42,38 @@ public class ClickableJob : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
+    private void Update()
+    {
+        if(stage == JobStage.Open && hasTransitionedStageVisual == false)
+        {
+            // switch to open 
+            hasTransitionedStageVisual = true;
+            concealmentImage.gameObject.SetActive(false);
+        }
+        else if(stage == JobStage.Closed && isWorkerOnItem)
+        {
+            // show graphic for working
+            currentHealth -= healthWorkFactor * Time.deltaTime;
+            UpdateHealthImage();
+
+            if (currentHealth <= 0)
+            {
+                isWorkerOnItem = false;
+                stage = JobStage.Open;
+                GameManager.Instance.ReleaseWorker();
+            }
+        }
+
+        // else nothing is happneing?
+    }
+
 
     public void SetupJob(JobSpawnController jobController, StockType stockType)
     {
         this.jobController = jobController;
         this.stockType = stockType;
 
+        currentHealth = maxHealth;
         nameText.text = stockType.name;
         sr.color = stockType.Color;
     }
@@ -52,5 +95,16 @@ public class ClickableJob : MonoBehaviour
     public void ClearVelocity()
     {
         rb.velocity = Vector2.zero;
+    }
+
+    public void StartWorkOnItem()
+    {
+        isWorkerOnItem = true;
+        healthImage.gameObject.SetActive(true);
+    }
+
+    private void UpdateHealthImage()
+    {
+        healthImage.fillAmount = currentHealth / maxHealth;
     }
 }

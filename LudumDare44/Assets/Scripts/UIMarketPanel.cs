@@ -19,6 +19,11 @@ public class UIMarketPanel : MonoBehaviour
     bool isHoldingControl = false;
     bool isHoldingSpace = false;
 
+    bool isHoldingAltLastFrame = false;
+    bool isHoldingShiftLastFrame = false;
+    bool isHoldingControlLastFrame = false;
+    bool isHoldingSpaceLastFrame = false;
+
     public void Initialize(StockController sc, List<StockData> stockDataList)
     {
         this.sc = sc;
@@ -41,8 +46,19 @@ public class UIMarketPanel : MonoBehaviour
             isHoldingControl = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
             isHoldingSpace = Input.GetKey(KeyCode.Space);
 
-            // update button text
-            RefreshUI();
+            // only update UI if a modifier has changed since last frame
+            if (isHoldingAlt != isHoldingAltLastFrame ||
+                isHoldingShift != isHoldingShiftLastFrame ||
+                isHoldingControl != isHoldingControlLastFrame ||
+                isHoldingSpace != isHoldingSpaceLastFrame)
+            {
+                RefreshUI();
+            }
+
+            isHoldingAltLastFrame = isHoldingAlt;
+            isHoldingShiftLastFrame = isHoldingShift;
+            isHoldingControlLastFrame = isHoldingControl;
+            isHoldingSpaceLastFrame = isHoldingSpace;
         }
     }
 

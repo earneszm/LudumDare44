@@ -42,20 +42,29 @@ public class UIMarketItem : MonoBehaviour
 
     public void RefreshUI(int buttonPriceModifier)
     {
-        if (buttonPriceModifier == 0)
-            this.buttonPriceModifier = stockData.QuantityOwned;
-        else
-            this.buttonPriceModifier = buttonPriceModifier;
+        this.buttonPriceModifier = buttonPriceModifier;
 
         nameText.text = stockData.StockType.name;
         priceText.text = stockData.SharePrice.ToString("N2");
         quantityOwnedText.text = stockData.QuantityOwned.ToString();
 
-        sellButtonText.text = string.Format("SELL {0}", buttonPriceModifier > 1 ? "x" + Mathf.Min(buttonPriceModifier, stockData.QuantityOwned) : "");
-        buyButtonText.text = string.Format("BUY {0}", buttonPriceModifier > 1 ? "x" + buttonPriceModifier : "");
+        var sellTextModifier = "";
+        var buyTextModifier = "";
+
+        if (buttonPriceModifier == 0)
+        {
+            sellTextModifier = buyTextModifier = "MAX";
+        }
+        else
+        {
+            sellTextModifier = buttonPriceModifier > 1 ? "x" + Mathf.Min(buttonPriceModifier, stockData.QuantityOwned) : "";
+            buyTextModifier = buttonPriceModifier > 1 ? "x" + buttonPriceModifier : "";
+        }
+
+        sellButtonText.text = string.Format("SELL {0}", sellTextModifier);
+        buyButtonText.text = string.Format("BUY {0}", buyTextModifier);
 
         sellButton.interactable = stockData.QuantityOwned > 0;
-
 
         // when the modifier is 0, just check if we can buy any (this is the trigger for max buy)
         buyButton.interactable = GameManager.Instance.Cash >= (stockData.SharePrice * (buttonPriceModifier > 0 ? buttonPriceModifier : 1));
@@ -64,13 +73,13 @@ public class UIMarketItem : MonoBehaviour
 
     public void OnSellButtonClick()
     {
-        GameManager.Instance.OnCashChanged(stockData.SellShares(buttonPriceModifier));
+        GameManager.Instance.OnCashChanged(stockData.SellShares(buttonPriceModifier == 0 ? stockData.QuantityOwned : buttonPriceModifier));
         marketPanel.OnMarketRowChanged();
     }
 
     public void OnBuyButtonClick()
     {
-        GameManager.Instance.OnCashChanged(-stockData.BuyShares(buttonPriceModifier));
+        GameManager.Instance.OnCashChanged(-stockData.BuyShares(buttonPriceModifier == 0 ? stockData.MaxSharesForPrice(GameManager.Instance.Cash) : buttonPriceModifier));
         marketPanel.OnMarketRowChanged();
     }
 }

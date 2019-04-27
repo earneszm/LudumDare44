@@ -9,9 +9,11 @@ public class JobSpawnController : MonoBehaviour
     private ClickableJob jobPrefab;
     [SerializeField]
     private List<JobCatcher> jobCatchers;
-    
+
 
     [Header("Spawn Details")]
+    [SerializeField]
+    private float spawnFirstGroupAfterSeconds = 3f;
     [SerializeField]
     private float secondsBetweenSpawns = 3f;
     [SerializeField]
@@ -46,15 +48,15 @@ public class JobSpawnController : MonoBehaviour
     private void Start()
     {
         SetupAllSpawnLocations();
-        lastJobSpawned = secondsBetweenSpawns;
+        SetNextSpawnAsFirstGroup();
     }
 
     private void Update()
-    {
-        lastJobSpawned += Time.deltaTime;
-
+    {       
         if (GameManager.Instance.IsGamePlayActive == false)
             return;
+
+        lastJobSpawned += Time.deltaTime;
 
         if (ShouldSpawnJob())
             DoJobSpawn();
@@ -163,5 +165,14 @@ public class JobSpawnController : MonoBehaviour
         }
 
         activeJobs.Clear();
+    }
+
+
+    /// <summary>
+    ///  call this to make the next spawn behave as if it were the first spawn (spawns it earlier than normal)
+    /// </summary>
+    public void SetNextSpawnAsFirstGroup()
+    {
+        lastJobSpawned = secondsBetweenSpawns - spawnFirstGroupAfterSeconds;
     }
 }

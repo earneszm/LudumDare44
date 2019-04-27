@@ -30,3 +30,9 @@ public enum StockRiskyness
     [VolatilityDetail(8f, 80f, 35, 90, 18, 30)]
     Crypto
 }
+
+public enum JobStage
+{
+    Closed,
+    Open
+}

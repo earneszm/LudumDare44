@@ -14,6 +14,10 @@ public class MouseInput : MonoBehaviour
     private Vector3 lastPos = Vector3.zero;
     private Vector3 delta = Vector3.zero;
 
+    private int heldSortingOrder = 100;
+    private int defaultSortingOrder = 0;
+
+
     private void Update()
     { 
         if (Input.GetMouseButton(0))
@@ -48,9 +52,23 @@ public class MouseInput : MonoBehaviour
             if (item != null)
             {
                 //item.Clicked();
-                currentHoldObject = item;
-                currentHoldObject.ClearVelocity();
-                lastPos = Input.mousePosition;
+                if (item.IsDraggable)
+                {
+                    currentHoldObject = item;
+                    currentHoldObject.ClearVelocity();
+                    currentHoldObject.sr.sortingOrder = heldSortingOrder;
+                    lastPos = Input.mousePosition;
+                }
+                else if(item.IsWorkerOnItem == false && GameManager.Instance.CurrentAvailableWorkers > 0)
+                {
+                    // add worker to item
+                    GameManager.Instance.ConsumeWorker();
+                    item.StartWorkOnItem();
+                }
+                else
+                {
+                    // no available workers, create alert?
+                }
             }
         }
     }
@@ -59,6 +77,7 @@ public class MouseInput : MonoBehaviour
     {
         if (currentHoldObject != null)
         {
+            currentHoldObject.sr.sortingOrder = defaultSortingOrder;
             delta = delta.normalized;
             var force = new Vector2(delta.x * throwSpeedModifier, delta.y * throwSpeedModifier);
             currentHoldObject.Launch(force);

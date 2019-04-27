@@ -67,16 +67,16 @@ public static class GameUtils
         return "";
     }
 
-    public static float GetStockChangePercent(VolatilityDetail detail)
+    public static Tuple<bool, float> GetStockChangePercent(VolatilityDetail detail)
     {
         bool isCrashing = UnityEngine.Random.Range(1f, 100f) < detail.chanceOfCrash;
 
         if(isCrashing)
-            return -1 * UnityEngine.Random.Range(detail.minCrashPercent, detail.maxCrashPercent);
+            return Tuple.Create(true,  -1 * UnityEngine.Random.Range(detail.minCrashPercent, detail.maxCrashPercent));
 
         float directionModifier = UnityEngine.Random.Range(1f, 100f) < detail.chanceOfIncrease ? 1 : -1;
 
-        return directionModifier * UnityEngine.Random.Range(detail.minIncrease, detail.maxIncrease);
+        return Tuple.Create(false, directionModifier * UnityEngine.Random.Range(detail.minIncrease, detail.maxIncrease));
     }
 }
 

@@ -26,7 +26,13 @@ public class StockData
 
     public void DoStockTick()
     {
-        sharePrice = sharePrice * (1 + (GameUtils.GetStockChangePercent(volatility) / 100));
+        var changeTick = GameUtils.GetStockChangePercent(volatility);
+
+        // if it crashed send alert
+        if (changeTick.Item1 == true)
+            UIManager.Instance.CreateAlert(string.Format("{0} just crashed by {1}%!", StockType.name, (-changeTick.Item2).ToString("N0")), StockType.Color);
+
+        sharePrice = sharePrice * (1 + (changeTick.Item2 / 100));
     }
 
    public void SetCurrentValue(float value)
@@ -56,5 +62,10 @@ public class StockData
         quantityOwned = 0;
 
         return returnValue;
+    }
+
+    public int MaxSharesForPrice(float amount)
+    {
+        return Mathf.FloorToInt(amount / SharePrice);
     }
 }
