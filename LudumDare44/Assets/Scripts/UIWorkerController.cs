@@ -7,6 +7,8 @@ public class UIWorkerController : MonoBehaviour
 {
     private List<UIWorkerIndicator> workers;
 
+    public int AvailableWorkers { get { return workers.Count(x => x.IsAvailable); } }
+
     private void Awake()
     {
         workers = GetComponentsInChildren<UIWorkerIndicator>().ToList();
@@ -20,6 +22,16 @@ public class UIWorkerController : MonoBehaviour
         }
     }
 
+    public void InitializeStartingWorkers(int number)
+    {
+        SetActiveWorkers(number);
+
+        for (int i = 0; i < number; i++)
+        {
+            workers[i].SetAvailable(true);
+        }
+    }
+
     public void SetActiveWorkers(int numActive)
     {
         // deactivate any workers with a number higher than the starting number
@@ -28,7 +40,7 @@ public class UIWorkerController : MonoBehaviour
 
     public bool TryConsumeWorker()
     {
-        for (int i = workers.Count - 1; i < workers.Count; i--)
+        for (int i = workers.Count - 1; i >= 0; i--)
         {
             if (workers[i].IsActive && workers[i].IsAvailable)
             {
@@ -44,7 +56,7 @@ public class UIWorkerController : MonoBehaviour
     public void ReleaseWorker()
     {
         // release first active but non available worker
-        for (int i = workers.Count - 1; i < workers.Count; i--)
+        for (int i = workers.Count - 1; i >= 0; i--)
         {
             if (workers[i].IsActive && workers[i].IsAvailable == false)
             {

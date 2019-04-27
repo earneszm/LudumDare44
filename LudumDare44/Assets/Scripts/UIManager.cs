@@ -22,8 +22,8 @@ public class UIManager : MonoBehaviour
     private UIMarketPanel marketItemPanel;
     [SerializeField]
     private UIAlertController alertPanel;
-    [SerializeField]
-    private UIWorkerController workerController;
+    
+    public UIWorkerController workerController;
 
     private void Awake()
     {
@@ -85,20 +85,5 @@ public class UIManager : MonoBehaviour
     public void CreateAlert(string text, Color color)
     {
         alertPanel.SetNewAlert(text, color);
-    }
-
-    public void SetActiveWorkers(int num)
-    {
-        workerController.SetActiveWorkers(num);
-    }
-
-    public bool ConsumeWorker()
-    {
-        return workerController.TryConsumeWorker();
-    }
-
-    public void ReleaseWorker()
-    {
-        workerController.ReleaseWorker();
     }
 }

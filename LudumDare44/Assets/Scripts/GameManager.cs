@@ -15,9 +15,8 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     private int maxNumWorkers = 2;
-    private int currentAvailableWorkers;
 
-    public int CurrentAvailableWorkers { get { return currentAvailableWorkers; } }
+    public int CurrentAvailableWorkers { get { return wc.AvailableWorkers; } }
 
     //private List<Investment> investments;
     private bool isGameMainGamePlayActive = true;
@@ -27,6 +26,7 @@ public class GameManager : MonoBehaviour
     // other systems
     private CompoundController tc;
     private StockController sc;
+    private UIWorkerController wc;
     
 
     private void Awake()
@@ -42,8 +42,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        currentAvailableWorkers = maxNumWorkers;
-        UIManager.Instance.SetActiveWorkers(maxNumWorkers);
+        wc = UIManager.Instance.workerController;
+        wc.InitializeStartingWorkers(maxNumWorkers);
         Cash = 0;        
       //  investments = UIManager.Instance.investments;
         RefreshNetWorth();
@@ -103,14 +103,12 @@ public class GameManager : MonoBehaviour
 
     public void ReleaseWorker()
     {
-        currentAvailableWorkers++;
-        UIManager.Instance.ReleaseWorker();
+        wc.ReleaseWorker();
     }
 
-    public void ConsumeWorker()
-    {
-        if(UIManager.Instance.ConsumeWorker())
-            currentAvailableWorkers--;
+    public bool TryConsumeWorker()
+    {        
+        return wc.TryConsumeWorker();
     }
     
 }

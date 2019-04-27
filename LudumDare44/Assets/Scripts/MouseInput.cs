@@ -59,10 +59,9 @@ public class MouseInput : MonoBehaviour
                     currentHoldObject.sr.sortingOrder = heldSortingOrder;
                     lastPos = Input.mousePosition;
                 }
-                else if(item.IsWorkerOnItem == false && GameManager.Instance.CurrentAvailableWorkers > 0)
+                else if(item.IsWorkerOnItem == false && GameManager.Instance.TryConsumeWorker())
                 {
                     // add worker to item
-                    GameManager.Instance.ConsumeWorker();
                     item.StartWorkOnItem();
                 }
                 else
