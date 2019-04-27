@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
-    private int cash;
+    public int Cash;
 
     private void Awake()
     {
@@ -18,9 +18,14 @@ public class GameManager : MonoBehaviour
 
     public void OnJobGained(ClickableJob job)
     {
-        cash += job.Value;
+        Cash += job.Value;
 
-        Debug.Log(cash);
+        Debug.Log(Cash);
+    }
+
+    public void OnInvestmentPurchased(Investment investment)
+    {
+        Cash -= investment.Cost;
     }
     
 }
