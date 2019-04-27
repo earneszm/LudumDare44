@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
 
     // other systems
     private CompoundController tc;
+    private StockController sc;
     
 
     private void Awake()
@@ -28,6 +29,7 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
 
         tc = GetComponent<CompoundController>();
+        sc = GetComponent<StockController>();
     }
 
     private void Start()
@@ -64,6 +66,7 @@ public class GameManager : MonoBehaviour
         }
 
         RefreshNetWorth();
+        sc.OrderStockList();
     }
 
     public void RefreshNetWorth()

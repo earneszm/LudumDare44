@@ -9,8 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 047e013f1ce23ec468140c84c4ceebb5, type: 3}
-  m_Name: Construction
+  m_Script: {fileID: 11500000, guid: e9bddf85c7304db4bb5dc7a2b87c23e4, type: 3}
+  m_Name: Twatter
   m_EditorClassIdentifier: 
-  Health: 5
-  Value: 250
+  MinStartingValue: 20
+  MaxStartingValue: 35
+  Riskyness: 2
+  Color: {r: 0.9056604, g: 0.32894266, b: 0.5137287, a: 1}

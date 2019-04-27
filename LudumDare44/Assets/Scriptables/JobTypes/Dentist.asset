@@ -12,6 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 047e013f1ce23ec468140c84c4ceebb5, type: 3}
   m_Name: Dentist
   m_EditorClassIdentifier: 
-  Name: Dentist
   Health: 7
   Value: 750

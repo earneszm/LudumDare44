@@ -8,5 +8,5 @@ public class StockType : ScriptableObject
     public float MinStartingValue;
     public float MaxStartingValue;
     public StockRiskyness Riskyness;
-
+    public Color Color;
 }
