@@ -38,4 +38,24 @@ public class StockController : MonoBehaviour
         }
     }
 
+    public void UpdateAllStocks()
+    {
+        UIStock indexFund = null;
+        foreach (var stock in allStocks)
+        {
+            if (stock.IsIndexFund)
+                indexFund = stock;
+            else
+                stock.DoStockTick();
+        }
+
+        if (indexFund != null)
+        {
+            var count = allStocks.Where(x => x.IsIndexFund == false).Count();
+            indexFund.SetCurrentValue(allStocks.Where(x => x.IsIndexFund == false).Sum(x => x.CurrentValue) /  count);
+        }
+
+        OrderStockList();
+    }
+
 }

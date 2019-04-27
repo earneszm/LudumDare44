@@ -66,7 +66,7 @@ public class GameManager : MonoBehaviour
         }
 
         RefreshNetWorth();
-        sc.OrderStockList();
+        sc.UpdateAllStocks();
     }
 
     public void RefreshNetWorth()

@@ -2021,6 +2021,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 849c67853b035624c841b3cf25e11055, type: 2}
   - {fileID: 11400000, guid: 332c74a0cb4770d46afcb5099468a9eb, type: 2}
   - {fileID: 11400000, guid: 9640bff3585783d4ba3d0ea64d3a6ccc, type: 2}
+  - {fileID: 11400000, guid: dd7df6652ec1dd84682390264f4d48cc, type: 2}
   stockList: {fileID: 602385451}
 --- !u!1001 &1552880439
 PrefabInstance:
