@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,6 +16,10 @@ public class UIManager : MonoBehaviour
     private DynamicText yearText;
     [SerializeField]
     private DynamicText totalYearText;
+
+    [Header("Dialogs")]
+    [SerializeField]
+    private UIMarketPanel marketItemPanel;
 
     private void Awake()
     {
@@ -37,20 +42,20 @@ public class UIManager : MonoBehaviour
 
     public void RefreshUIButtons()
     {
-        foreach (var investment in investments)
-        {
-            investment.ToggleButton(investment.Cost <= GameManager.Instance.Cash);
-        }
+        //foreach (var investment in investments)
+        //{
+        //    investment.ToggleButton(investment.Cost <= GameManager.Instance.Cash);
+        //}
     }
 
-    public void UpdateCashText(int cash)
+    public void UpdateCashText(float cash)
     {
-        cashText.UpdateText(cash.ToString());
+        cashText.UpdateText(cash.ToString("N2"));
     }
 
-    public void UpdateNetWorthText(int netWorth)
+    public void UpdateNetWorthText(float netWorth)
     {
-        netWorthText.UpdateText(netWorth.ToString());
+        netWorthText.UpdateText(netWorth.ToString("N2"));
     }
 
     public void UpdateCurrentYear(int currentYear, int currentCompound)
@@ -61,5 +66,15 @@ public class UIManager : MonoBehaviour
     public void UpdateTotalYearsText(int totalYears)
     {
         totalYearText.UpdateText(totalYears);
+    }
+
+    public void InitializeStockContainers(StockController sc, List<StockData> stockDataList)
+    {
+        marketItemPanel.Initialize(sc, stockDataList);
+    }
+
+    public void ToggleMarketScreen(Action onCloseCallback = null)
+    {
+        marketItemPanel.Show();
     }
 }

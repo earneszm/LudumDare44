@@ -13,22 +13,39 @@ public class CompoundController : MonoBehaviour
     private int totalYears;
     public int TotalYears { get { return totalYears; } }
 
+    [Header("DEBUG")]
+    [SerializeField]
+    private int startingCompound = 0;
+    [SerializeField]
+    private int startingYear = 1;
+
     private float lastCompound;
     private int currentCompound;
     public int CurrentCompound { get { return currentCompound; } private set { currentCompound = value; UIManager.Instance.UpdateCurrentYear(CurrentYear, currentCompound); } }
 
     private int currentYear;
     public int CurrentYear { get { return currentYear; } private set { currentYear = value; UIManager.Instance.UpdateCurrentYear(currentYear, CurrentCompound); } }
+    
+    // other systems
+    private JobSpawnController jobSpawner;
+
+    private void Awake()
+    {
+        jobSpawner = GetComponent<JobSpawnController>();
+    }
 
     private void Start()
     {
-        CurrentCompound = 0;
-        CurrentYear = 1;
+        CurrentCompound = startingCompound;
+        CurrentYear = startingYear;
         UIManager.Instance.UpdateTotalYearsText(totalYears);
     }
 
     public void Update()
     {
+        if (GameManager.Instance.IsGamePlayActive == false)
+            return;
+
         lastCompound += Time.deltaTime;
 
         if (lastCompound >= secondsPerCompound)
@@ -47,12 +64,18 @@ public class CompoundController : MonoBehaviour
         lastCompound = 0f;
         CurrentCompound++;
 
-        if(currentCompound > compoundsPerYear)
+        GameManager.Instance.DoCompounding();
+
+        if (currentCompound >= compoundsPerYear)
         {
             CurrentYear++;
             CurrentCompound = 0;
-        }
 
-        GameManager.Instance.DoCompounding();
+            // year is over, show market screen, pause game
+            GameManager.Instance.ToggleGamePlayActive(false);
+            jobSpawner.KillAllActiveJobs();
+
+            UIManager.Instance.ToggleMarketScreen(() => { GameManager.Instance.ToggleGamePlayActive(true); });
+        }        
     }
 }

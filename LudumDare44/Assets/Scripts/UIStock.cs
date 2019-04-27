@@ -10,49 +10,40 @@ public class UIStock : MonoBehaviour
     private TextMeshProUGUI nameText;
     [SerializeField]
     private TextMeshProUGUI priceText;
+    [SerializeField]
+    private TextMeshProUGUI quantityOwnedText;
+
     private Image backgroundImage;
-    private StockType stockType;
+    private StockData stockData;
 
-    private float currentValue;
-    public float CurrentValue { get { return currentValue; } }
-    public bool IsIndexFund { get { return stockType.IndexFund; } }
-
-    private VolatilityDetail volatility;
+    public float CurrentValue { get { return stockData.SharePrice; } }
 
     private void Awake()
     {
         backgroundImage = GetComponent<Image>();
     }
 
-    public void SetUpStock(StockType stockType)
+    public void SetUpStock(StockData stockData)
     {
-        this.stockType = stockType;
-        volatility = GameUtils.GetVolatility(stockType.Riskyness);
-        backgroundImage.color = stockType.Color;
+        this.stockData = stockData;
+        backgroundImage.color = stockData.StockType.Color;
         SetStartingValue();        
     }
 
     private void SetStartingValue()
     {
-        nameText.text = stockType.name;
-        currentValue = Random.Range(stockType.MinStartingValue, stockType.MaxStartingValue);
-        RefreshPriceText();
+        nameText.text = stockData.StockType.name;        
+        RefreshText();
     }
 
-    private void RefreshPriceText()
+    public void RefreshText()
     {
-        priceText.text = currentValue.ToString("N2");
+        priceText.text = stockData.SharePrice.ToString("N2");
+        quantityOwnedText.text = stockData.QuantityOwned.ToString();
     }
 
     public void DoStockTick()
     {
-        currentValue = currentValue * (1 + (GameUtils.GetStockChangePercent(volatility) / 100));
-        RefreshPriceText();
-    }
-
-    public void SetCurrentValue(float value)
-    {
-        currentValue = value;
-        RefreshPriceText();
-    }
+        RefreshText();
+    }    
 }

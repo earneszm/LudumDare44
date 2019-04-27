@@ -4,10 +4,37 @@ using UnityEngine;
 
 public class MouseInput : MonoBehaviour
 {
+    [SerializeField]
+    private float throwSpeedModifier = 5f;
+
+    private ClickableJob currentHoldObject;
+
+    private Vector3 target;
+
+    private Vector3 lastPos = Vector3.zero;
+    private Vector3 delta = Vector3.zero;
+
     private void Update()
+    { 
+        if (Input.GetMouseButton(0))
+        {
+            if (currentHoldObject == null)
+                CheckHit();
+            else
+                UpdatePositions();
+        }
+        else
+            ReleaseObject();
+    }
+
+    private void LateUpdate()
     {
-        if (Input.GetMouseButtonUp(0))
-            CheckHit();
+        if (currentHoldObject != null)
+        {
+            target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            target.z = 0;
+            currentHoldObject.transform.position = target;
+        }
     }
 
     public void CheckHit()
@@ -20,8 +47,29 @@ public class MouseInput : MonoBehaviour
 
             if (item != null)
             {
-                item.Clicked();
+                //item.Clicked();
+                currentHoldObject = item;
+                currentHoldObject.ClearVelocity();
+                lastPos = Input.mousePosition;
             }
         }
+    }
+
+    private void ReleaseObject()
+    {
+        if (currentHoldObject != null)
+        {
+            delta = delta.normalized;
+            var force = new Vector2(delta.x * throwSpeedModifier, delta.y * throwSpeedModifier);
+            currentHoldObject.Launch(force);
+            currentHoldObject = null;
+        }
+    }
+
+    private void UpdatePositions()
+    {
+        delta = Input.mousePosition - lastPos;
+
+        lastPos = Input.mousePosition;
     }
 }

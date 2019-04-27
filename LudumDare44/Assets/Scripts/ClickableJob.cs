@@ -8,54 +8,49 @@ public class ClickableJob : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI nameText;
     [SerializeField]
-    private TextMeshProUGUI healthText;
-    [SerializeField]
     private TextMeshProUGUI valueText;
 
-    private int currentHealth;
-
-    
+    private SpriteRenderer sr;
     private Collider2D clickable;
+    private Rigidbody2D rb;
 
-    private JobType jobType;
+    public StockType stockType;
     private JobSpawnController jobController;
 
-    public int Value { get { return jobType.Value; } }
 
     private void Awake()
     {
+        sr = GetComponentInChildren<SpriteRenderer>();
         clickable = GetComponent<Collider2D>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
-    public void Clicked()
-    {
-        currentHealth--;
 
-        if (currentHealth <= 0)
-            PickUp();
-        else
-            UpdateHealthText();
-    }
-
-    public void SetupJob(JobSpawnController jobController, JobType jobType)
+    public void SetupJob(JobSpawnController jobController, StockType stockType)
     {
         this.jobController = jobController;
-        this.jobType = jobType;
-        this.currentHealth = jobType.Health;
+        this.stockType = stockType;
 
-        nameText.text = jobType.name;
-        UpdateHealthText();
+        nameText.text = stockType.name;
+        sr.color = stockType.Color;
     }
 
-    private void UpdateHealthText()
+    public void PickUp(bool isGainValue)
     {
-        healthText.text = currentHealth.ToString();
-    }
+        if(isGainValue)
+            GameManager.Instance.OnJobGained(this);
 
-    private void PickUp()
-    {
-        GameManager.Instance.OnJobGained(this);
         jobController.ReportJobDestroyed(this);
         Destroy(gameObject);
+    }
+
+    public void Launch(Vector2 direction)
+    {
+        rb.AddForce(direction);
+    }
+
+    public void ClearVelocity()
+    {
+        rb.velocity = Vector2.zero;
     }
 }

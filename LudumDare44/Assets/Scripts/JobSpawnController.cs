@@ -8,16 +8,14 @@ public class JobSpawnController : MonoBehaviour
     [SerializeField]
     private ClickableJob jobPrefab;
     [SerializeField]
-    private List<JobType> jobTypes;
+    private List<JobCatcher> jobCatchers;
+    
 
     [Header("Spawn Details")]
     [SerializeField]
-    private int maxJobsPerMinute;
+    private float secondsBetweenSpawns = 3f;
     [SerializeField]
-    private float minSecondsBetweenJobs = 3f;
-    [SerializeField]
-    [Range(0, 1)]
-    private float jobSpawnDecayPerMinute = 0.2f;
+    private int jobsPerSpawn = 3;
 
     private float lastJobSpawned;
 
@@ -32,17 +30,31 @@ public class JobSpawnController : MonoBehaviour
     [SerializeField]
     private Transform jobSpawnBottomBound;
 
-    private List<ClickableJob> jobs = new List<ClickableJob>();
+    private List<StockType> stockTypes;
+    private List<ClickableJob> activeJobs = new List<ClickableJob>();
     private List<Vector3> allSpawnPositions = new List<Vector3>();
+
+    // other systems
+    private StockController sc;
+
+    private void Awake()
+    {
+        sc = GetComponent<StockController>();
+        stockTypes = sc.StockTypes;
+    }
 
     private void Start()
     {
         SetupAllSpawnLocations();
+        lastJobSpawned = secondsBetweenSpawns;
     }
 
     private void Update()
     {
         lastJobSpawned += Time.deltaTime;
+
+        if (GameManager.Instance.IsGamePlayActive == false)
+            return;
 
         if (ShouldSpawnJob())
             DoJobSpawn();
@@ -50,7 +62,7 @@ public class JobSpawnController : MonoBehaviour
 
     private bool ShouldSpawnJob()
     {
-        if (lastJobSpawned < minSecondsBetweenJobs)
+        if (lastJobSpawned < secondsBetweenSpawns)
             return false;
 
         return true;
@@ -58,6 +70,8 @@ public class JobSpawnController : MonoBehaviour
 
     private void DoJobSpawn()
     {
+        KillAllActiveJobs();
+
         lastJobSpawned = 0;
 
         var availablePositions = GetAvailableSpawnPositions();
@@ -65,10 +79,41 @@ public class JobSpawnController : MonoBehaviour
         if (availablePositions.Count == 0)
             return;
 
-        var job = Instantiate(jobPrefab, GetRandomJobPosition(availablePositions), Quaternion.identity);
-        job.SetupJob(this, jobTypes[Random.Range(0, jobTypes.Count)]);
+        var availableStocks = stockTypes.ToList();
 
-        jobs.Add(job);
+        for (int i = 0; i < jobsPerSpawn; i++)
+        {
+            var pos = GetRandomJobPosition(availablePositions);
+            availablePositions.Remove(pos);
+
+            var job = Instantiate(jobPrefab, pos, Quaternion.identity);
+            var stockType = availableStocks[Random.Range(0, availableStocks.Count)];
+            job.SetupJob(this, stockType);
+
+            availableStocks.Remove(stockType);
+
+            activeJobs.Add(job);
+        }
+
+        SetUpJobCatchers();
+    }
+
+    private void SetUpJobCatchers()
+    {
+        foreach (var catcher in jobCatchers)
+        {
+            catcher.Clear();
+        }
+
+        var availableCatchers = jobCatchers.ToList();
+
+        foreach (var job in activeJobs)
+        {
+            var randomCatcher = availableCatchers[Random.Range(0, availableCatchers.Count)];
+            randomCatcher.SetUpStockType(job.stockType);
+
+            availableCatchers.Remove(randomCatcher);
+        }
     }
 
     private Vector3 GetRandomJobPosition(List<Vector3> availablePositions)
@@ -87,7 +132,7 @@ public class JobSpawnController : MonoBehaviour
 
         foreach (var pos in allSpawnPositions)
         {
-            if (jobs.Any(x => x.transform.position.x == pos.x && x.transform.position.y == pos.y) == false)
+            if (activeJobs.Any(x => x.transform.position.x == pos.x && x.transform.position.y == pos.y) == false)
                 availablePositions.Add(pos);
         }
 
@@ -107,7 +152,16 @@ public class JobSpawnController : MonoBehaviour
 
     public void ReportJobDestroyed(ClickableJob job)
     {
-        jobs.Remove(job);
+        activeJobs.Remove(job);
     }
 
+    public void KillAllActiveJobs()
+    {
+        foreach (var job in activeJobs)
+        {
+            Destroy(job.gameObject);
+        }
+
+        activeJobs.Clear();
+    }
 }
