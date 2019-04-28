@@ -362,8 +362,10 @@ MonoBehaviour:
   healthWorkFactor: 5
   concealmentImage: {fileID: 3571507940349737228}
   healthImage: {fileID: 3105052770485544711}
+  jobTypeText: {fileID: 2685828301017758364}
   sr: {fileID: 0}
   stockType: {fileID: 0}
+  jobType: {fileID: 0}
 --- !u!58 &3576426762835331714
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -592,7 +594,7 @@ GameObject:
   - component: {fileID: 3846142991479992172}
   - component: {fileID: 2685828301017758364}
   m_Layer: 0
-  m_Name: Text
+  m_Name: JobTypeText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

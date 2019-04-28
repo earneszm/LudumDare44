@@ -36,3 +36,11 @@ public enum JobStage
     Closed,
     Open
 }
+
+public enum JobDifficulty
+{
+    Easy = 8,
+    Normal = 14,
+    Hard = 20,
+    Insane = 30
+}

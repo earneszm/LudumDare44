@@ -22,7 +22,11 @@ public class UIManager : MonoBehaviour
     private UIMarketPanel marketItemPanel;
     [SerializeField]
     private UIAlertController alertPanel;
-    
+    [SerializeField]
+    private UIGameOver gameOverPanel;
+    [SerializeField]
+    private RectTransform pauseOverlay;
+
     public UIWorkerController workerController;
 
     private void Awake()
@@ -85,5 +89,15 @@ public class UIManager : MonoBehaviour
     public void CreateAlert(string text, Color color)
     {
         alertPanel.SetNewAlert(text, color);
+    }
+
+    public void ShowGameOver(float goalAmount, float scoreAmount)
+    {
+        gameOverPanel.Show(goalAmount, scoreAmount);
+    }
+
+    public void TogglePauseOverlay(bool isPaused)
+    {
+        pauseOverlay.gameObject.SetActive(isPaused);
     }
 }

@@ -19,7 +19,14 @@ public class MouseInput : MonoBehaviour
 
 
     private void Update()
-    { 
+    {
+        if (Input.GetKeyUp(KeyCode.Space))
+            GameManager.Instance.TogglePause();
+
+        // if the game is paused, do not allow any interaction
+        if (Time.timeScale == 0)
+            return;
+
         if (Input.GetMouseButton(0))
         {
             if (currentHoldObject == null)
@@ -29,6 +36,8 @@ public class MouseInput : MonoBehaviour
         }
         else
             ReleaseObject();
+
+        
     }
 
     private void LateUpdate()

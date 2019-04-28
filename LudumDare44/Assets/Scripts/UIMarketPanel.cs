@@ -17,12 +17,10 @@ public class UIMarketPanel : MonoBehaviour
     bool isHoldingAlt = false;
     bool isHoldingShift = false;
     bool isHoldingControl = false;
-    bool isHoldingSpace = false;
 
     bool isHoldingAltLastFrame = false;
     bool isHoldingShiftLastFrame = false;
     bool isHoldingControlLastFrame = false;
-    bool isHoldingSpaceLastFrame = false;
 
     public void Initialize(StockController sc, List<StockData> stockDataList)
     {
@@ -44,13 +42,11 @@ public class UIMarketPanel : MonoBehaviour
             isHoldingAlt = Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt);
             isHoldingShift = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
             isHoldingControl = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
-            isHoldingSpace = Input.GetKey(KeyCode.Space);
 
             // only update UI if a modifier has changed since last frame
             if (isHoldingAlt != isHoldingAltLastFrame ||
                 isHoldingShift != isHoldingShiftLastFrame ||
-                isHoldingControl != isHoldingControlLastFrame ||
-                isHoldingSpace != isHoldingSpaceLastFrame)
+                isHoldingControl != isHoldingControlLastFrame)
             {
                 RefreshUI();
             }
@@ -58,7 +54,6 @@ public class UIMarketPanel : MonoBehaviour
             isHoldingAltLastFrame = isHoldingAlt;
             isHoldingShiftLastFrame = isHoldingShift;
             isHoldingControlLastFrame = isHoldingControl;
-            isHoldingSpaceLastFrame = isHoldingSpace;
         }
     }
 
@@ -105,17 +100,14 @@ public class UIMarketPanel : MonoBehaviour
 
     private int GetModifier()
     {
-        if (isHoldingSpace)
+        if (isHoldingControl)
             return 0;
 
-        if (isHoldingControl)
-            return 50;
-
         if (isHoldingAlt)
-            return 20;
+            return 25;
 
         if (isHoldingShift)
-            return 5;
+            return 10;
 
         return 1;
     }

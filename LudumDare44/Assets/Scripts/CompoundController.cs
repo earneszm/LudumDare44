@@ -53,27 +53,28 @@ public class CompoundController : MonoBehaviour
     }
 
     private void DoCompound()
-    {
-        if(CurrentYear >= totalYears && CurrentCompound >= compoundsPerYear)
-        {
-            // game over condition
-            GameManager.Instance.GameOver();
-            return;
-        }        
-
+    {       
         lastCompound = 0f;
         CurrentCompound++;
 
-        GameManager.Instance.DoCompounding();
+        GameManager.Instance.DoCompounding();        
 
         if (currentCompound >= compoundsPerYear)
-        {
-            CurrentYear++;
-            CurrentCompound = 0;
+        {         
 
             // year is over, show market screen, pause game
             GameManager.Instance.ToggleGamePlayActive(false);
             jobSpawner.KillAllActiveJobs();
+
+            if (CurrentYear >= totalYears)
+            {
+                // game over condition
+                GameManager.Instance.GameOver();
+                return;
+            }
+
+            CurrentYear++;
+            CurrentCompound = 0;
 
             UIManager.Instance.ToggleMarketScreen(() => { GameManager.Instance.ToggleGamePlayActive(true); jobSpawner.SetNextSpawnAsFirstGroup(); });
         }        

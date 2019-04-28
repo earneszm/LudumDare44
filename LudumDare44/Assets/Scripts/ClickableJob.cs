@@ -16,6 +16,8 @@ public class ClickableJob : MonoBehaviour
     private Image concealmentImage;
     [SerializeField]
     private Image healthImage;
+    [SerializeField]
+    private TextMeshProUGUI jobTypeText;
 
     private float currentHealth;
 
@@ -34,6 +36,8 @@ public class ClickableJob : MonoBehaviour
     public SpriteRenderer sr;
     [HideInInspector]
     public StockType stockType;
+    [HideInInspector]
+    public JobType jobType;
 
     private void Awake()
     {
@@ -68,14 +72,17 @@ public class ClickableJob : MonoBehaviour
     }
 
 
-    public void SetupJob(JobSpawnController jobController, StockType stockType)
+    public void SetupJob(JobSpawnController jobController, StockType stockType, JobType jobType)
     {
         this.jobController = jobController;
         this.stockType = stockType;
+        this.jobType = jobType;
 
-        currentHealth = maxHealth;
+        currentHealth = maxHealth = (int)jobType.difficulty;
         nameText.text = stockType.name;
         sr.color = stockType.Color;
+        concealmentImage.sprite = jobType.sprite;
+        jobTypeText.text = jobType.name;
     }
 
     public void PickUp(bool isGainValue)
@@ -106,5 +113,10 @@ public class ClickableJob : MonoBehaviour
     private void UpdateHealthImage()
     {
         healthImage.fillAmount = currentHealth / maxHealth;
+    }
+
+    public void RemoveWorker()
+    {
+        isWorkerOnItem = false;
     }
 }

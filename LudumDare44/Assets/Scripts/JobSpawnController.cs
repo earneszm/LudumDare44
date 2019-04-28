@@ -9,6 +9,8 @@ public class JobSpawnController : MonoBehaviour
     private ClickableJob jobPrefab;
     [SerializeField]
     private List<JobCatcher> jobCatchers;
+    [SerializeField]
+    private List<JobType> jobTypes;
 
 
     [Header("Spawn Details")]
@@ -49,6 +51,7 @@ public class JobSpawnController : MonoBehaviour
     {
         SetupAllSpawnLocations();
         SetNextSpawnAsFirstGroup();
+        SetUpJobCatchers();
     }
 
     private void Update()
@@ -90,7 +93,8 @@ public class JobSpawnController : MonoBehaviour
 
             var job = Instantiate(jobPrefab, pos, Quaternion.identity);
             var stockType = availableStocks[Random.Range(0, availableStocks.Count)];
-            job.SetupJob(this, stockType);
+            var jobType = GetJobTypeForStock(stockType);
+            job.SetupJob(this, stockType, jobType);
 
             availableStocks.Remove(stockType);
 
@@ -161,10 +165,12 @@ public class JobSpawnController : MonoBehaviour
     {
         foreach (var job in activeJobs)
         {
+            job.RemoveWorker();
             Destroy(job.gameObject);
         }
 
         activeJobs.Clear();
+        GameManager.Instance.StopAllWorkers();
     }
 
 
@@ -174,5 +180,32 @@ public class JobSpawnController : MonoBehaviour
     public void SetNextSpawnAsFirstGroup()
     {
         lastJobSpawned = secondsBetweenSpawns - spawnFirstGroupAfterSeconds;
+    }
+
+
+    // assigns a difficulty based on the current price of the stock chosen
+    private JobType GetJobTypeForStock(StockType type)
+    {
+        var maxStockNumber = sc.stockDataList.Count;
+
+        var allStocks = sc.stockDataList.OrderByDescending(x => x.SharePrice).ToList();
+
+        var rank = 0;
+
+        for (int i = 0; i < allStocks.Count; i++)
+        {
+            if (allStocks[i].StockType == type)
+            {
+                rank = i;
+                break;
+            }
+        }
+
+        var difficulty = GameUtils.GetDifficulty((float)rank / (float)maxStockNumber);
+        var matchingJobs = jobTypes.Where(x => x.difficulty == difficulty).ToList();
+
+        var randomJob = matchingJobs[Random.Range(0, matchingJobs.Count)];
+
+        return randomJob;
     }
 }

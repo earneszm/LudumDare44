@@ -4,9 +4,7 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName = "JobType")]
 public class JobType : ScriptableObject
-{
-    public int Health;
-    public int Value;
-    
-    // TODO: flavor text, images?
+{    
+    public JobDifficulty difficulty;
+    public Sprite sprite;
 }

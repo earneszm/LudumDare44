@@ -61,10 +61,10 @@ public static class GameUtils
             case 9: return "September";
             case 10: return "October";
             case 11: return "November";
-            case 12: return "December";
+            case 12:
+            default:
+                return "December";
         }
-
-        return "";
     }
 
     public static Tuple<bool, float> GetStockChangePercent(VolatilityDetail detail)
@@ -77,6 +77,20 @@ public static class GameUtils
         float directionModifier = UnityEngine.Random.Range(1f, 100f) < detail.chanceOfIncrease ? 1 : -1;
 
         return Tuple.Create(false, directionModifier * UnityEngine.Random.Range(detail.minIncrease, detail.maxIncrease));
+    }
+
+    public static JobDifficulty GetDifficulty(float percentile)
+    {
+        if(percentile <= .25f)         
+            return JobDifficulty.Insane;
+
+        if (percentile <= .50f)
+            return JobDifficulty.Hard;
+
+        if (percentile <= .75f)
+            return JobDifficulty.Normal;
+
+        return JobDifficulty.Easy;
     }
 }
 

@@ -45,6 +45,7 @@ public class UIWorkerController : MonoBehaviour
             if (workers[i].IsActive && workers[i].IsAvailable)
             {
                 workers[i].SetAvailable(false);
+                ReOrderWorkers();
                 return true;
             }
         }
@@ -61,8 +62,26 @@ public class UIWorkerController : MonoBehaviour
             if (workers[i].IsActive && workers[i].IsAvailable == false)
             {
                 workers[i].SetAvailable(true);
+                workers[i].transform.SetSiblingIndex(0);
                 return;
             }
+        }
+    }
+
+    private void ReOrderWorkers()
+    {
+        for (int i = 0; i < workers.Count; i++)
+        {
+            if (workers[i].IsActive && workers[i].IsAvailable)
+                workers[i].transform.SetSiblingIndex(0);
+        }
+    }
+
+    public void FreeAllWorkers()
+    {
+        foreach (var worker in workers)
+        {
+            worker.SetAvailable(true);
         }
     }
 }

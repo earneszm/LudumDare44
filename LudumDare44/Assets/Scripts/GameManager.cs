@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -15,12 +16,15 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     private int maxNumWorkers = 2;
+    [SerializeField]
+    private float victoryAmount = 50000;
 
     public int CurrentAvailableWorkers { get { return wc.AvailableWorkers; } }
 
     //private List<Investment> investments;
     private bool isGameMainGamePlayActive = true;
     public bool IsGamePlayActive { get { return isGameMainGamePlayActive; } }
+    public bool IsGameOver { get; set; }
 
 
     // other systems
@@ -76,7 +80,9 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        Debug.LogError("Game Over");
+        IsGameOver = true;
+        UIManager.Instance.ShowGameOver(victoryAmount, NetWorth);
+        Time.timeScale = 0;
     }
 
     public void DoCompounding()
@@ -109,6 +115,31 @@ public class GameManager : MonoBehaviour
     public bool TryConsumeWorker()
     {        
         return wc.TryConsumeWorker();
+    }
+
+    public void StopAllWorkers()
+    {
+        wc.FreeAllWorkers();
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(0);
+    }
+
+    public void QuitToMainMenu()
+    {
+        SceneManager.LoadScene(0);
+    }
+
+    public void TogglePause()
+    {
+        if (IsGameOver)
+            return;
+
+        Time.timeScale = Time.timeScale == 0 ? 1 : 0;
+
+        UIManager.Instance.TogglePauseOverlay(Time.timeScale == 0);
     }
     
 }
