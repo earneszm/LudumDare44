@@ -11,6 +11,8 @@ public class JobSpawnController : MonoBehaviour
     private List<JobCatcher> jobCatchers;
     [SerializeField]
     private List<JobType> jobTypes;
+    [SerializeField]
+    private UIJobSpawnIndicator spawnIndicator;
 
 
     [Header("Spawn Details")]
@@ -22,6 +24,7 @@ public class JobSpawnController : MonoBehaviour
     private int jobsPerSpawn = 3;
 
     private float lastJobSpawned;
+    private bool isSpawningJobs;
 
 
     [Header("Job Spawn Bounds")]
@@ -62,21 +65,32 @@ public class JobSpawnController : MonoBehaviour
         lastJobSpawned += Time.deltaTime;
 
         if (ShouldSpawnJob())
-            DoJobSpawn();
+            StartCoroutine(JobSpawnAfterSeconds(1));
+
+        spawnIndicator.UpdateIndicator(1 - (lastJobSpawned / secondsBetweenSpawns));
     }
 
     private bool ShouldSpawnJob()
     {
-        if (lastJobSpawned < secondsBetweenSpawns)
+        if (isSpawningJobs || lastJobSpawned < secondsBetweenSpawns)
             return false;
 
         return true;
     }
 
-    private void DoJobSpawn()
+    private IEnumerator JobSpawnAfterSeconds(float seconds)
     {
         KillAllActiveJobs();
+        isSpawningJobs = true;
 
+        yield return new WaitForSeconds(seconds);
+
+        DoJobSpawn();
+        isSpawningJobs = false;
+    }
+
+    private void DoJobSpawn()
+    {      
         lastJobSpawned = 0;
 
         var availablePositions = GetAvailableSpawnPositions();
