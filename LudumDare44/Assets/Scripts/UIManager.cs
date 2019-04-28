@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Guirao.UltimateTextDamage;
 
 public class UIManager : MonoBehaviour
 {
@@ -26,6 +27,10 @@ public class UIManager : MonoBehaviour
     private UIGameOver gameOverPanel;
     [SerializeField]
     private RectTransform pauseOverlay;
+    [SerializeField]
+    private RectTransform tutorialOverlay;
+    [SerializeField]
+    private UltimateTextDamageManager damageManager;
 
     public UIWorkerController workerController;
 
@@ -99,5 +104,17 @@ public class UIManager : MonoBehaviour
     public void TogglePauseOverlay(bool isPaused)
     {
         pauseOverlay.gameObject.SetActive(isPaused);
+    }
+
+    public void ToggleTutorialPanel()
+    {
+        tutorialOverlay.gameObject.SetActive(!tutorialOverlay.gameObject.activeInHierarchy);
+
+        GameManager.Instance.TogglePause();
+    }
+
+    public void AddFloatingText(string text, Transform location)
+    {
+        damageManager.Add(text, location);
     }
 }

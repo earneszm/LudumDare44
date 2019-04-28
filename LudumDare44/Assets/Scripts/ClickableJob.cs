@@ -22,6 +22,8 @@ public class ClickableJob : MonoBehaviour
     private TextMeshProUGUI jobTypeText;
     [SerializeField]
     public SpriteRenderer forgroundSprite;
+    [SerializeField]
+    public float moneyForStartingJob = 50;
 
     private float currentHealth;
 
@@ -33,7 +35,8 @@ public class ClickableJob : MonoBehaviour
     private bool hasTransitionedStageVisual = false;
     
     private Collider2D clickable;
-    private Rigidbody2D rb;    
+    private Rigidbody2D rb;
+    private Animator animator;
     private JobSpawnController jobController;
 
     
@@ -46,6 +49,7 @@ public class ClickableJob : MonoBehaviour
     {
         clickable = GetComponent<Collider2D>();
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -76,6 +80,7 @@ public class ClickableJob : MonoBehaviour
 
     public void SetupJob(JobSpawnController jobController, StockType stockType, JobType jobType)
     {
+        gameObject.SetActive(false);
         this.jobController = jobController;
         this.stockType = stockType;
         this.jobType = jobType;
@@ -85,6 +90,15 @@ public class ClickableJob : MonoBehaviour
         forgroundSprite.color = stockType.Color;
         concealmentImage.sprite = jobType.sprite;
         jobTypeText.text = jobType.name;
+
+        GameManager.Instance.RunCoroutine(SpawnAfterSeconds(Random.Range(0f, 0.5f)));
+    }
+
+    private IEnumerator SpawnAfterSeconds(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        gameObject.SetActive(true);
+        animator.SetTrigger("spawn");
     }
 
     public void PickUp(bool isGainValue)

@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private int maxNumWorkers = 2;
     [SerializeField]
-    private float victoryAmount = 50000;
+    public List<Vector2> victoryAmountsForYears;
 
     public int CurrentAvailableWorkers { get { return wc.AvailableWorkers; } }
 
@@ -53,6 +53,8 @@ public class GameManager : MonoBehaviour
         Cash = 0;        
       //  investments = UIManager.Instance.investments;
         RefreshNetWorth();
+
+        UIManager.Instance.ToggleTutorialPanel();
     }
 
     public void OnJobGained(ClickableJob job)
@@ -84,7 +86,7 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         IsGameOver = true;
-        UIManager.Instance.ShowGameOver(victoryAmount, NetWorth, MoneyFromJobs);
+        UIManager.Instance.ShowGameOver(victoryAmountsForYears[0].y, NetWorth, MoneyFromJobs);
         Time.timeScale = 0;
     }
 
@@ -127,7 +129,7 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
     }
 
     public void QuitToMainMenu()
@@ -143,6 +145,11 @@ public class GameManager : MonoBehaviour
         Time.timeScale = Time.timeScale == 0 ? 1 : 0;
 
         UIManager.Instance.TogglePauseOverlay(Time.timeScale == 0);
+    }
+
+    public void RunCoroutine(IEnumerator routine)
+    {
+        StartCoroutine(routine);
     }
     
 }

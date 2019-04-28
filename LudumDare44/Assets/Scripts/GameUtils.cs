@@ -3,9 +3,32 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
+using System.Linq;
 
 public static class GameUtils
 {
+    public static int GameLength = 5;
+
+    public static float GetVictoryAmountForGameLength(List<Vector2> data)
+    {
+        var amount = data.FirstOrDefault(d => d.x == GameLength);
+
+        if (amount == null)
+            return 50000;
+
+        return amount.y;
+    }
+
+    public static float GetGameLengthInYears(List<Vector2> data)
+    {
+        var amount = data.FirstOrDefault(d => d.x == GameLength);
+
+        if (amount == null)
+            return GameLength;
+
+        return amount.x;
+    }
+
     public static string GetDescription(Enum en)
     {
 

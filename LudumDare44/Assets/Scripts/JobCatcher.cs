@@ -24,6 +24,7 @@ public class JobCatcher : MonoBehaviour
 
         if(job != null && job.stockType.name == stockType.name)
         {
+            UIManager.Instance.AddFloatingText("+1 " + job.stockType.name, transform);
             job.PickUp(true);
         }
     }

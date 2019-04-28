@@ -17,17 +17,17 @@ public enum InvestmentType
 
 public enum StockRiskyness
 {
-    [VolatilityDetail(.5f, 80f, 20, 50, 1, 4)]
+    [VolatilityDetail(.5f, 80f, 20, 50, 5, 10)]
     Safe,
-    [VolatilityDetail(1f, 75f, 20, 50, 2, 6)]
+    [VolatilityDetail(1f, 80, 20, 50, 5, 15)]
     Normal,
-    [VolatilityDetail(3f, 65f, 20, 55, 3, 8)]
+    [VolatilityDetail(3f, 80, 25, 60, 7, 20)]
     Growth,
-    [VolatilityDetail(4f, 65f, 25, 65, 5, 12)]
+    [VolatilityDetail(4f, 70f, 35, 75, 10, 24)]
     Volatile,
-    [VolatilityDetail(6f, 70f, 30, 75, 15, 24)]
+    [VolatilityDetail(6f, 70f, 40, 80, 20, 35)]
     Excessive,
-    [VolatilityDetail(8f, 80f, 35, 90, 18, 30)]
+    [VolatilityDetail(8f, 80f, 50, 90, 24, 40)]
     Crypto
 }
 

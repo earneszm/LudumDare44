@@ -9,7 +9,7 @@ public class CompoundController : MonoBehaviour
     [SerializeField]
     private int compoundsPerYear;
     public int CompoundsPerYear { get { return compoundsPerYear; } }
-    [SerializeField]
+   // [SerializeField]
     private int totalYears;
     public int TotalYears { get { return totalYears; } }
 
@@ -38,6 +38,7 @@ public class CompoundController : MonoBehaviour
     {
         CurrentCompound = startingCompound;
         CurrentYear = startingYear;
+        totalYears = (int)GameUtils.GetGameLengthInYears(GameManager.Instance.victoryAmountsForYears);
         UIManager.Instance.UpdateTotalYearsText(totalYears);
     }
 

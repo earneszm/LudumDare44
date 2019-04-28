@@ -71,6 +71,8 @@ public class MouseInput : MonoBehaviour
                 else if(item.IsWorkerOnItem == false && GameManager.Instance.TryConsumeWorker())
                 {
                     // add worker to item
+                    UIManager.Instance.AddFloatingText("+$" + item.moneyForStartingJob, item.transform);
+                    GameManager.Instance.OnCashChanged(item.moneyForStartingJob);
                     item.StartWorkOnItem();
                 }
                 else
