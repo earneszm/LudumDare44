@@ -18,6 +18,8 @@ public class ClickableJob : MonoBehaviour
     private Image healthImage;
     [SerializeField]
     private TextMeshProUGUI jobTypeText;
+    [SerializeField]
+    public SpriteRenderer forgroundSprite;
 
     private float currentHealth;
 
@@ -32,8 +34,7 @@ public class ClickableJob : MonoBehaviour
     private Rigidbody2D rb;    
     private JobSpawnController jobController;
 
-    [HideInInspector]
-    public SpriteRenderer sr;
+    
     [HideInInspector]
     public StockType stockType;
     [HideInInspector]
@@ -41,7 +42,6 @@ public class ClickableJob : MonoBehaviour
 
     private void Awake()
     {
-        sr = GetComponentInChildren<SpriteRenderer>();
         clickable = GetComponent<Collider2D>();
         rb = GetComponent<Rigidbody2D>();
     }
@@ -80,7 +80,7 @@ public class ClickableJob : MonoBehaviour
 
         currentHealth = maxHealth = (int)jobType.difficulty;
         nameText.text = stockType.name;
-        sr.color = stockType.Color;
+        forgroundSprite.color = stockType.Color;
         concealmentImage.sprite = jobType.sprite;
         jobTypeText.text = jobType.name;
     }

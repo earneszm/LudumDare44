@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     private float netWorth;
     public float NetWorth { get { return netWorth; } private set { netWorth = value; UIManager.Instance.UpdateNetWorthText(netWorth); } }
 
+    public float MoneyFromJobs { get; private set; }
+
     [SerializeField]
     private int maxNumWorkers = 2;
     [SerializeField]
@@ -55,7 +57,7 @@ public class GameManager : MonoBehaviour
 
     public void OnJobGained(ClickableJob job)
     {
-        sc.BuyStock(job.stockType, 1, false);
+        MoneyFromJobs += sc.BuyStock(job.stockType, 1, false);
         RefreshNetWorth();
 
         UIManager.Instance.RefreshUIButtons();
@@ -81,7 +83,7 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         IsGameOver = true;
-        UIManager.Instance.ShowGameOver(victoryAmount, NetWorth);
+        UIManager.Instance.ShowGameOver(victoryAmount, NetWorth, MoneyFromJobs);
         Time.timeScale = 0;
     }
 

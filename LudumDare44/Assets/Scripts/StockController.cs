@@ -73,7 +73,7 @@ public class StockController : MonoBehaviour
         RefreshStockListUI();
     }
 
-    public void BuyStock(StockType stockType, int quantity, bool isRequiresCash = true)
+    public float BuyStock(StockType stockType, int quantity, bool isRequiresCash = true)
     {       
         var stockDatum = stockDataList.FirstOrDefault(x => x.StockType == stockType);
 
@@ -81,7 +81,7 @@ public class StockController : MonoBehaviour
         if(isRequiresCash && stockDatum.SharePrice * quantity > GameManager.Instance.Cash)
         {
             Debug.LogError(string.Format("Attempting to buy {0} shares of: {1} at price: {2}. Not enough Current Cash: {3}", quantity, stockType.name, stockDatum.SharePrice, GameManager.Instance.Cash));
-            return;
+            return 0;
         }
 
         float stockValue = 0;
@@ -95,6 +95,8 @@ public class StockController : MonoBehaviour
             GameManager.Instance.OnCashChanged(-stockValue);
 
         stockListings.ForEach(x => x.RefreshText());
+
+        return stockValue;
     }
 
     /// <summary>

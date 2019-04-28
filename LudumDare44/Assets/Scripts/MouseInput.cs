@@ -65,7 +65,7 @@ public class MouseInput : MonoBehaviour
                 {
                     currentHoldObject = item;
                     currentHoldObject.ClearVelocity();
-                    currentHoldObject.sr.sortingOrder = heldSortingOrder;
+                    currentHoldObject.forgroundSprite.sortingOrder = heldSortingOrder;
                     lastPos = Input.mousePosition;
                 }
                 else if(item.IsWorkerOnItem == false && GameManager.Instance.TryConsumeWorker())
@@ -85,7 +85,7 @@ public class MouseInput : MonoBehaviour
     {
         if (currentHoldObject != null)
         {
-            currentHoldObject.sr.sortingOrder = defaultSortingOrder;
+            currentHoldObject.forgroundSprite.sortingOrder = defaultSortingOrder;
             delta = delta.normalized;
             var force = new Vector2(delta.x * throwSpeedModifier, delta.y * throwSpeedModifier);
             currentHoldObject.Launch(force);

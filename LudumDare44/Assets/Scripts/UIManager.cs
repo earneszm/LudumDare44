@@ -91,9 +91,9 @@ public class UIManager : MonoBehaviour
         alertPanel.SetNewAlert(text, color);
     }
 
-    public void ShowGameOver(float goalAmount, float scoreAmount)
+    public void ShowGameOver(float goalAmount, float scoreAmount, float amountFromJobs)
     {
-        gameOverPanel.Show(goalAmount, scoreAmount);
+        gameOverPanel.Show(goalAmount, scoreAmount, amountFromJobs);
     }
 
     public void TogglePauseOverlay(bool isPaused)
