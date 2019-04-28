@@ -15,7 +15,7 @@ public class MouseInput : MonoBehaviour
     private Vector3 delta = Vector3.zero;
 
     private int heldSortingOrder = 100;
-    private int defaultSortingOrder = 0;
+    private int defaultSortingOrder = 5;
 
 
     private void Update()

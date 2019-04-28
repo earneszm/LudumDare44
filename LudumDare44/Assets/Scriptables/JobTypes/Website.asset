@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 047e013f1ce23ec468140c84c4ceebb5, type: 3}
-  m_Name: Dentist
+  m_Name: Website
   m_EditorClassIdentifier: 
   difficulty: 20
-  sprite: {fileID: 21300000, guid: df8052cab56c32b4192862da9f81eecb, type: 3}
+  sprite: {fileID: 21300000, guid: f8a8461421720c9409c058b11febac5b, type: 3}

@@ -73,12 +73,14 @@ public class UIMarketItem : MonoBehaviour
 
     public void OnSellButtonClick()
     {
+        AudioManager.Instance.Sell();
         GameManager.Instance.OnCashChanged(stockData.SellShares(buttonPriceModifier == 0 ? stockData.QuantityOwned : buttonPriceModifier));
         marketPanel.OnMarketRowChanged();
     }
 
     public void OnBuyButtonClick()
     {
+        AudioManager.Instance.Buy();
         GameManager.Instance.OnCashChanged(-stockData.BuyShares(buttonPriceModifier == 0 ? stockData.MaxSharesForPrice(GameManager.Instance.Cash) : buttonPriceModifier));
         marketPanel.OnMarketRowChanged();
     }

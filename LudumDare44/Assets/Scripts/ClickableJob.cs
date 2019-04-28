@@ -17,6 +17,8 @@ public class ClickableJob : MonoBehaviour
     [SerializeField]
     private Image healthImage;
     [SerializeField]
+    private Image healthBackGroundImage;
+    [SerializeField]
     private TextMeshProUGUI jobTypeText;
     [SerializeField]
     public SpriteRenderer forgroundSprite;
@@ -108,6 +110,7 @@ public class ClickableJob : MonoBehaviour
     {
         isWorkerOnItem = true;
         healthImage.gameObject.SetActive(true);
+        healthBackGroundImage.gameObject.SetActive(true);
     }
 
     private void UpdateHealthImage()

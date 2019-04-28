@@ -15,4 +15,5 @@ MonoBehaviour:
   MinStartingValue: 20
   MaxStartingValue: 35
   Riskyness: 2
-  Color: {r: 0.9056604, g: 0.32894266, b: 0.5137287, a: 1}
+  IndexFund: 0
+  Color: {r: 0.9339623, g: 0.15419187, b: 0.40350622, a: 1}

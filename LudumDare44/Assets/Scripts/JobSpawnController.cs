@@ -58,9 +58,12 @@ public class JobSpawnController : MonoBehaviour
     }
 
     private void Update()
-    {       
+    {
         if (GameManager.Instance.IsGamePlayActive == false)
+        {
+            SetNextSpawnAsFirstGroup();
             return;
+        }
 
         lastJobSpawned += Time.deltaTime;
 

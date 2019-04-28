@@ -93,6 +93,7 @@ public class UIMarketPanel : MonoBehaviour
 
     public void OnSellAll()
     {
+        AudioManager.Instance.Sell();
         GameManager.Instance.SellAllShares();
 
         RefreshUI();

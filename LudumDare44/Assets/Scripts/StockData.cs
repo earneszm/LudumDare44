@@ -30,7 +30,10 @@ public class StockData
 
         // if it crashed send alert
         if (changeTick.Item1 == true)
+        {
+            AudioManager.Instance.Crash();
             UIManager.Instance.CreateAlert(string.Format("{0} just crashed by {1}%!", StockType.name, (-changeTick.Item2).ToString("N0")), StockType.Color);
+        }
 
         sharePrice = sharePrice * (1 + (changeTick.Item2 / 100));
     }

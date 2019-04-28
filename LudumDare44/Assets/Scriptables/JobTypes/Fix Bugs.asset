@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 047e013f1ce23ec468140c84c4ceebb5, type: 3}
-  m_Name: Construction
+  m_Name: Fix Bugs
   m_EditorClassIdentifier: 
   difficulty: 14
-  sprite: {fileID: 21300000, guid: 6dd8e8d3f98c19e4e8e3240961feef5c, type: 3}
+  sprite: {fileID: 21300000, guid: 307fc01ec845ffe47a4edea0091100b5, type: 3}

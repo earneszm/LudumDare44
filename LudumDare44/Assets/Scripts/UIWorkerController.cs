@@ -46,6 +46,7 @@ public class UIWorkerController : MonoBehaviour
             {
                 workers[i].SetAvailable(false);
                 ReOrderWorkers();
+                AudioManager.Instance.WorkerAssigned();
                 return true;
             }
         }

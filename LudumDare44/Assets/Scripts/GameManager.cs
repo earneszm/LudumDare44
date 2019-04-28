@@ -61,6 +61,7 @@ public class GameManager : MonoBehaviour
         RefreshNetWorth();
 
         UIManager.Instance.RefreshUIButtons();
+        AudioManager.Instance.StockGained();
     }
 
     public void OnInvestmentPurchased(Investment investment)
