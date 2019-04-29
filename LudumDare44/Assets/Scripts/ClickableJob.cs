@@ -136,4 +136,21 @@ public class ClickableJob : MonoBehaviour
     {
         isWorkerOnItem = false;
     }
+
+    public void KillJob()
+    {
+        StartCoroutine(StartKillAnimationAfterSeconds(Random.Range(0, .45f)));
+    }
+
+    private IEnumerator StartKillAnimationAfterSeconds(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        animator.SetTrigger("fade");
+    }
+
+    public void JobFadeAnimationDone()
+    {
+        RemoveWorker();
+        Destroy(gameObject);
+    }
 }

@@ -27,15 +27,17 @@ public class StockData
     public void DoStockTick()
     {
         var changeTick = GameUtils.GetStockChangePercent(volatility);
+        var previousAmount = OwnedValue;
+
+        sharePrice = sharePrice * (1 + (changeTick.Item2 / 100));
 
         // if it crashed send alert
         if (changeTick.Item1 == true)
         {
+            var lostAmount = previousAmount - OwnedValue;
             AudioManager.Instance.Crash();
-            UIManager.Instance.CreateAlert(string.Format("{0} just crashed by {1}%!", StockType.name, (-changeTick.Item2).ToString("N0")), StockType.Color);
+            UIManager.Instance.CreateAlert(string.Format("{0} just crashed by {1}%! {2}", StockType.name, (-changeTick.Item2).ToString("N0"), lostAmount > 0 ? "You lost $" + lostAmount.ToString("N2") : ""), StockType.Color);
         }
-
-        sharePrice = sharePrice * (1 + (changeTick.Item2 / 100));
     }
 
    public void SetCurrentValue(float value)

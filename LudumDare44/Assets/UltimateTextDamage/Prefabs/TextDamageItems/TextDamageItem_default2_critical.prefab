@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   autoFaceCamera: 0
-  label: {fileID: 114146245688651402}
+  labelTMP: {fileID: 0}
 --- !u!95 &95043893779423200
 Animator:
   serializedVersion: 3

@@ -91,9 +91,9 @@ public class UIManager : MonoBehaviour
         marketItemPanel.Show();
     }
 
-    public void CreateAlert(string text, Color color)
+    public UIAlert CreateAlert(string text, Color color)
     {
-        alertPanel.SetNewAlert(text, color);
+        return alertPanel.SetNewAlert(text, color);
     }
 
     public void ShowGameOver(float goalAmount, float scoreAmount, float amountFromJobs)

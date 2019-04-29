@@ -25,6 +25,7 @@ public class JobSpawnController : MonoBehaviour
 
     private float lastJobSpawned;
     private bool isSpawningJobs;
+    private bool isSpawnInstantly = true;
 
 
     [Header("Job Spawn Bounds")]
@@ -68,7 +69,7 @@ public class JobSpawnController : MonoBehaviour
         lastJobSpawned += Time.deltaTime;
 
         if (ShouldSpawnJob())
-            StartCoroutine(JobSpawnAfterSeconds(1));
+            StartCoroutine(JobSpawnAfterSeconds(isSpawnInstantly ? 0 : 1));
 
         spawnIndicator.UpdateIndicator(1 - (lastJobSpawned / secondsBetweenSpawns));
     }
@@ -90,6 +91,7 @@ public class JobSpawnController : MonoBehaviour
 
         DoJobSpawn();
         isSpawningJobs = false;
+        isSpawnInstantly = false;
     }
 
     private void DoJobSpawn()
@@ -182,8 +184,7 @@ public class JobSpawnController : MonoBehaviour
     {
         foreach (var job in activeJobs)
         {
-            job.RemoveWorker();
-            Destroy(job.gameObject);
+            job.KillJob();
         }
 
         activeJobs.Clear();
@@ -197,6 +198,7 @@ public class JobSpawnController : MonoBehaviour
     public void SetNextSpawnAsFirstGroup()
     {
         lastJobSpawned = secondsBetweenSpawns - spawnFirstGroupAfterSeconds;
+        isSpawnInstantly = true;
     }
 
 

@@ -17,7 +17,7 @@ public class UIAlertController : MonoBehaviour
         allAlerts.ForEach(x => x.gameObject.SetActive(false));
     }
 
-    public void SetNewAlert(string text, Color color)
+    public UIAlert SetNewAlert(string text, Color color)
     {
         var alert = GetNextInactiveAlert();
 
@@ -26,9 +26,10 @@ public class UIAlertController : MonoBehaviour
         else
         {
             alert.gameObject.transform.SetSiblingIndex(maxNumberOfAlerts);
-            alert.ShowAlert(text, color);
-            
+            alert.ShowAlert(text, color);            
         }
+
+        return alert;
     }
 
     private UIAlert GetNextInactiveAlert()
