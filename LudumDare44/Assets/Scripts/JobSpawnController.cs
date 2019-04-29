@@ -121,6 +121,7 @@ public class JobSpawnController : MonoBehaviour
         }
 
         SetUpJobCatchers();
+        GameManager.Instance.StopAllWorkers();
     }
 
     private void SetUpJobCatchers()

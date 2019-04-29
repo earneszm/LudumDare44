@@ -86,7 +86,7 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         IsGameOver = true;
-        UIManager.Instance.ShowGameOver(victoryAmountsForYears[0].y, NetWorth, MoneyFromJobs);
+        UIManager.Instance.ShowGameOver(GameUtils.GetVictoryAmountForGameLength(victoryAmountsForYears), NetWorth, MoneyFromJobs);
         Time.timeScale = 0;
     }
 
@@ -130,11 +130,13 @@ public class GameManager : MonoBehaviour
     public void RestartGame()
     {
         SceneManager.LoadScene(1);
+        Time.timeScale = 1;
     }
 
     public void QuitToMainMenu()
     {
         SceneManager.LoadScene(0);
+        Time.timeScale = 1;
     }
 
     public void TogglePause()
